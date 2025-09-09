@@ -9,6 +9,7 @@ import { AiOutlineEyeInvisible } from "react-icons/ai"; // eye-disab;e
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(AiOutlineEyeInvisible);
 
@@ -25,7 +26,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-[430px] h-[380px] mx-auto border border-gray-400 rounded-2xl px-4 py-4 shadow-md">
-        <form className="space-y-5 flex flex-col">
+        <form className="space-y-6 flex flex-col">
           <div className="flex flex-col space-y-3">
             <div className="flex items-center">
               <LiaUserShieldSolid size={16} />
@@ -36,6 +37,10 @@ export default function LoginPage() {
 
             <input
               type="text"
+              value={email}
+              onChange={(e)=>{
+                setEmail(e.target.value);
+              }}
               placeholder="Enter your usename"
               className="text-[14px] border px-1.5 py-2 rounded-lg border-gray-400 focus:outline-none focus:border-blue-600"
             />
