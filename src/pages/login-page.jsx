@@ -1,12 +1,11 @@
-import React from "react";
 import { useState } from "react";
+import axios from "axios";
 import { LiaUserShieldSolid } from "react-icons/lia";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SlLogin } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai"; //eye
 import { AiOutlineEyeInvisible } from "react-icons/ai"; // eye-disab;e
-import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -43,16 +42,17 @@ export default function LoginPage() {
         return;
       }
 
+      // success toast message
+      toast.success(response.data.message);
+
       console.log(response);
       // save the token to local storage
       localStorage.setItem("token", response.data.token);
 
       // redirect
       if (response.data.userData.type == "admin") {
-        toast.success(response.data.message);
         window.location.href = "/admin";
       } else {
-        toast.success(response.data.message);
         window.location.href = "/";
       }
     } catch (e) {
