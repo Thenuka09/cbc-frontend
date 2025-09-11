@@ -1,96 +1,90 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { MdDeleteForever } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { BsCartPlus } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function AdminProductsPage() {
   // product list state
-  const [products, setProducts] = useState([
-    {
-      _id: "6875e237bb99397ae8c73914",
-      productId: "CR001",
-      productName: "GlowSkin Hydrating Day Cream",
-      altNames: ["HydraGlow Cream", "Day Repair Cream", "Glow Cream"],
-      images: [
-        "https://example.com/images/glowskin_day_front.jpg",
-        "https://example.com/images/glowskin_day_side.jpg",
-      ],
-      price: 1499,
-      lastPrice: 1699,
-      description:
-        "GlowSkin Hydrating Day Cream is enriched with hyaluronic acid and vitamin E, providing long-lasting hydration and protecting the skin throughout the day.",
-      stock: 100,
-    },
-    {
-      _id: "6875e237bb99397ae8c73915",
-      productId: "CR002",
-      productName: "LumiNight Repair Serum",
-      altNames: ["Night Glow Serum", "Skin Renewal Serum", "Overnight Repair"],
-      images: [
-        "https://example.com/images/luminight_front.jpg",
-        "https://example.com/images/luminight_side.jpg",
-      ],
-      price: 2499,
-      lastPrice: 2799,
-      description:
-        "LumiNight Repair Serum helps repair damaged skin overnight with retinol and peptides, reducing fine lines and promoting a youthful glow.",
-      stock: 80,
-    },
-    {
-      _id: "6875e237bb99397ae8c73916",
-      productId: "CR003",
-      productName: "AquaFresh Cleansing Gel",
-      altNames: ["Deep Clean Gel", "Refreshing Face Wash", "HydraClean Gel"],
-      images: [
-        "https://example.com/images/aquafresh_front.jpg",
-        "https://example.com/images/aquafresh_side.jpg",
-      ],
-      price: 999,
-      lastPrice: 1199,
-      description:
-        "AquaFresh Cleansing Gel removes dirt, oil, and impurities while maintaining the skin’s natural moisture balance for a refreshed feel.",
-      stock: 150,
-    },
-    {
-      _id: "6875e237bb99397ae8c73917",
-      productId: "CR004",
-      productName: "SunShield SPF 50+",
-      altNames: ["UV Defense Lotion", "Daily Sunscreen", "SPF Shield"],
-      images: [
-        "https://example.com/images/sunshield_front.jpg",
-        "https://example.com/images/sunshield_side.jpg",
-      ],
-      price: 1799,
-      lastPrice: 1999,
-      description:
-        "SunShield SPF 50+ provides broad-spectrum sun protection with a lightweight, non-greasy formula suitable for all skin types.",
-      stock: 120,
-    },
-  ]);
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
     // get product details
     async function getProducts() {
-        try {
-            const response = await axios.get("http://localhost:5000/api/product");
-            setProducts(response.data);
-        } catch (error) {
-            console.error("Faild to fetch projects", error);
-        }
+      try {
+        const response = await axios.get("http://localhost:5000/api/product");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Faild to fetch projects", error);
+      }
     }
     getProducts();
   }, []);
 
   return (
-    <div className="pt-4">
-      <h1 className="text-center text-2xl">Admin Products Page</h1>
+    <div className="pt-8 px-6">
+      
+      <div className="flex justify-between items-center w-full mb-10">
+        <h1 className="text-3xl font-semibold text-black">
+          Products Details
+        </h1>
 
-      {products.map((product, index) => {
-        return (
-          <div key={index}>
-            {index}
-            {product.productName}
-          </div>
-        );
-      })}
+        {/* Add product button */}
+        <div className="">
+          <Link to={"/admin/products/add-products"} className="flex items-center bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg cursor-pointer text-white text-[16px] font-medium"> <BsCartPlus className="mr-2 font-semibold" /> Add Product</Link>
+        </div>
+      </div>
+
+      {/* Product Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-300 shadow-lg rounded-lg overflow-hidden mb-6">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-3 text-left text-gray-700 font-semibold truncate" >Product Id</th>
+              <th className="px-4 py-3 text-left text-gray-700 font-semibold truncate">Product Name</th>
+              <th className="px-4 py-3 text-center text-gray-700 font-semibold truncate">Price</th>
+              <th className="px-4 py-3 text-center text-gray-700 font-semibold truncate">Last Price</th>
+              <th className="px-4 py-3 text-center text-gray-700 font-semibold truncate">Stocks</th>
+              <th className="px-4 py-3 text-left text-gray-700 font-semibold truncate">Description</th>
+              <th className="px-4 py-3 text-center text-gray-700 font-semibold truncate">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-gray-200">
+            {products.map((product, index) => (
+              <tr
+                key={index}
+                className="hover:bg-gray-50 transition duration-200"
+              >
+                <td className="px-4 py-3 text-[14px]">{product.productId}</td>
+                <td className="px-4 py-3 font-medium text-gray-800 text-[14px]">
+                  {product.productName}
+                </td>
+                <td className="px-4 py-3 text-center text-green-600 font-semibold text-[14px] truncate">
+                  Rs. {product.price}
+                </td>
+                <td className="px-4 py-3 text-center line-through text-red-500 text-[14px] truncate">
+                  Rs. {product.lastPrice}
+                </td>
+                <td
+                  className={`px-4 py-3 text-center font-semibold text-[14px] truncate ${product.stock > 50 ? "text-green-600" : "text-yellow-600"
+                    }`}
+                >
+                  {product.stock}
+                </td>
+                <td className="px-4 py-3 text-gray-600 text-[14px] max-w-[300px] truncate" title={product.description}>{product.description}</td>
+                <td className="px-4 py-3 text-[18px]">
+                  <div className="flex space-x-2">
+                    <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black"><MdDeleteForever /></button>
+                    <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
