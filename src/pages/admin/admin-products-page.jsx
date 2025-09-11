@@ -71,7 +71,6 @@ export default function AdminProductsPage() {
     async function getProducts() {
         try {
             const response = await axios.get("http://localhost:5000/api/product");
-            console.log("Response", response);
             setProducts(response.data);
         } catch (error) {
             console.error("Faild to fetch projects", error);

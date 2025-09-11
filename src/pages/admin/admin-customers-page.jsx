@@ -30,8 +30,6 @@ export default function AdminCustomersPage() {
         ]
     )
 
-    console.log(customers);
-
     // get customers using api
     useEffect(() => {
         async function getAllCustomers() {

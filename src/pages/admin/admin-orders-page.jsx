@@ -62,7 +62,6 @@ export default function AdminOrdersPage() {
         async function getOrders() {
             try {
                 const response = await axios.get("http://localhost:5000/api/order");
-                // console.log("Order Details", response.data);
                 setOrders(response.data);
             } catch (error) {
                 console.error("Failed to fetch orders :", error);
