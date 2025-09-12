@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { MdAddTask } from "react-icons/md";
 import { FaWpforms } from "react-icons/fa";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProductForm() {
 
@@ -8,10 +11,48 @@ export default function AddProductForm() {
     const [productName, setProductName] = useState("");
     const [alternativeNames, setAlternativeNames] = useState("");
     const [imageURLs, setImageURLs] = useState("");
-    const [price, setPrice] = useState(0);
-    const [lastPrice, setLastPrice] = useState(0);
-    const [stocks, setStocks] = useState(0);
+    const [price, setPrice] = useState();
+    const [lastPrice, setLastPrice] = useState();
+    const [stocks, setStocks] = useState();
     const [description, setDescription] = useState("");
+
+    // Navigation
+    const navigate = useNavigate();
+
+    async function handleSubmit() {
+        const altNames = alternativeNames.split(",");
+        const imgUrls = imageURLs.split(",")
+
+        // console.log("Alternative Names", altNames);
+        // console.log("Image URL's", imgUrls);
+
+        const product = {
+            productId : productId,
+            productName : productName,
+            altNames : altNames,
+            images : imgUrls,
+            price : price,
+            lastPrice : lastPrice,
+            description : description,
+            stock : stocks
+        }
+
+        // get token
+        const token = localStorage.getItem("token");
+
+        try {
+            await axios.post("http://localhost:5000/api/product", product, {
+                headers : {
+                    Authorization : `Bearer ${token}`
+                }
+            })
+            navigate("/admin/products");
+            toast.success("Product Added Success!");
+        } catch (error) {
+            console.error("Failed to add Product", error);
+            toast.error("Failed to add Product");
+        }
+    }
 
     return (
         <div className="w-full flex justify-center items-center min-h-screen pt-8 pb-8 bg-gray-50">
@@ -100,7 +141,12 @@ export default function AddProductForm() {
                         />
                     </div>
                     <div className="flex">
-                        <button className="bg-green-400 w-full py-2 cursor-pointer rounded-[6px] flex items-center justify-center text-[18px] hover:bg-green-500"> <MdAddTask className="mr-2" /> Add Product</button>
+                        <button
+                            onClick={handleSubmit}
+                            className="bg-green-400 w-full py-2 cursor-pointer rounded-[6px] flex items-center justify-center text-[18px] hover:bg-green-500"> <MdAddTask className="mr-2"
+                            />
+                            Add Product
+                        </button>
                     </div>
                 </div>
             </div>
