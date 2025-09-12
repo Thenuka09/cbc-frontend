@@ -4,27 +4,32 @@ import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BsCartPlus } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function AdminProductsPage() {
   // product list state
   const [products, setProducts] = useState([])
+  const [productsLoaded, setProductsLoaded] = useState(false);
 
   useEffect(() => {
-    // get product details
-    async function getProducts() {
-      try {
-        const response = await axios.get("http://localhost:5000/api/product");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Faild to fetch projects", error);
+    if (!productsLoaded) {
+      // get product details
+      async function getProducts() {
+        try {
+          const response = await axios.get("http://localhost:5000/api/product");
+          setProducts(response.data);
+          setProductsLoaded(true);
+        } catch (error) {
+          console.error("Faild to fetch projects", error);
+        }
       }
+      getProducts();
     }
-    getProducts();
-  }, []);
+  }, [productsLoaded]);
 
   return (
     <div className="pt-8 px-6">
-      
+
       <div className="flex justify-between items-center w-full mb-10">
         <h1 className="text-3xl font-semibold text-black">
           Products Details
@@ -76,7 +81,26 @@ export default function AdminProductsPage() {
                 <td className="px-4 py-3 text-gray-600 text-[14px] max-w-[300px] truncate" title={product.description}>{product.description}</td>
                 <td className="px-4 py-3 text-[18px]">
                   <div className="flex space-x-2">
-                    <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black"><MdDeleteForever /></button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const token = localStorage.getItem("token");
+                          await axios.delete(`http://localhost:5000/api/product/${product.productId}`, {
+                            headers: {
+                              Authorization: `Bearer ${token}`
+                            }
+                          })
+                          toast.success("Product Delete Success!");
+                          setProductsLoaded(false);
+                        } catch (error) {
+                          toast.error("Failed to Delete Product");
+                          console.error("failed to delete product", error)
+                        }
+                      }}
+
+                      className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black">
+                      <MdDeleteForever />
+                    </button>
                     <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
                   </div>
                 </td>
