@@ -57,55 +57,76 @@ export default function AdminProductsPage() {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {products.map((product, index) => (
-              <tr
-                key={index}
-                className="hover:bg-gray-50 transition duration-200"
-              >
-                <td className="px-4 py-3 text-[14px]">{product.productId}</td>
-                <td className="px-4 py-3 font-medium text-gray-800 text-[14px]">
-                  {product.productName}
-                </td>
-                <td className="px-4 py-3 text-center text-green-600 font-semibold text-[14px] truncate">
-                  Rs. {product.price}
-                </td>
-                <td className="px-4 py-3 text-center line-through text-red-500 text-[14px] truncate">
-                  Rs. {product.lastPrice}
-                </td>
-                <td
-                  className={`px-4 py-3 text-center font-semibold text-[14px] truncate ${product.stock > 50 ? "text-green-600" : "text-yellow-600"
-                    }`}
-                >
-                  {product.stock}
-                </td>
-                <td className="px-4 py-3 text-gray-600 text-[14px] max-w-[300px] truncate" title={product.description}>{product.description}</td>
-                <td className="px-4 py-3 text-[18px]">
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={async () => {
-                        try {
-                          const token = localStorage.getItem("token");
-                          await axios.delete(`http://localhost:5000/api/product/${product.productId}`, {
-                            headers: {
-                              Authorization: `Bearer ${token}`
-                            }
-                          })
-                          toast.success("Product Delete Success!");
-                          setProductsLoaded(false);
-                        } catch (error) {
-                          toast.error("Failed to Delete Product");
-                          console.error("failed to delete product", error)
-                        }
-                      }}
 
-                      className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black">
-                      <MdDeleteForever />
-                    </button>
-                    <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
+            {/* added loader */}
+            {!productsLoaded &&
+              <tr>
+                <td colSpan={7} className="py-4">
+                  <div className="flex justify-center items-center w-full">
+                    <div className="w-[30px] h-[30px] border-[3px] border-gray-400 border-b-blue-700 animate-spin rounded-full"></div>
                   </div>
                 </td>
               </tr>
-            ))}
+            }
+
+            {products.length === 0 ?
+              <tr>
+                <td colSpan={7} className="py-4">
+                  <div className="flex justify-center items-center w-full">
+                    <span className="text-[14px] text-gray-500">No Products found</span>
+                  </div>
+                </td>
+              </tr>
+              :
+              products.map((product, index) => (
+                <tr
+                  key={index}
+                  className="hover:bg-gray-50 transition duration-200"
+                >
+                  <td className="px-4 py-3 text-[14px]">{product.productId}</td>
+                  <td className="px-4 py-3 font-medium text-gray-800 text-[14px]">
+                    {product.productName}
+                  </td>
+                  <td className="px-4 py-3 text-center text-green-600 font-semibold text-[14px] truncate">
+                    Rs. {product.price}
+                  </td>
+                  <td className="px-4 py-3 text-center line-through text-red-500 text-[14px] truncate">
+                    Rs. {product.lastPrice}
+                  </td>
+                  <td
+                    className={`px-4 py-3 text-center font-semibold text-[14px] truncate ${product.stock > 50 ? "text-green-600" : "text-yellow-600"
+                      }`}
+                  >
+                    {product.stock}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600 text-[14px] max-w-[300px] truncate" title={product.description}>{product.description}</td>
+                  <td className="px-4 py-3 text-[18px]">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={async () => {
+                          try {
+                            const token = localStorage.getItem("token");
+                            await axios.delete(`http://localhost:5000/api/product/${product.productId}`, {
+                              headers: {
+                                Authorization: `Bearer ${token}`
+                              }
+                            })
+                            toast.success("Product Delete Success!");
+                            setProductsLoaded(false);
+                          } catch (error) {
+                            toast.error("Failed to Delete Product");
+                            console.error("failed to delete product", error)
+                          }
+                        }}
+
+                        className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black">
+                        <MdDeleteForever />
+                      </button>
+                      <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
