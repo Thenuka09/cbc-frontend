@@ -17,6 +17,17 @@ export default function FileUploadPage() {
 
         console.log(file);
         const supabase = createClient(url, key);
+
+        // images -> bucket name of supabase
+        supabase.storage.from("images").upload(file.name, file,{
+            cacheControl: "3600",
+            upsert: false
+        }).then((res)=>{
+            console.log(res);
+        })
+
+        const publicUrl = supabase.storage.from("images").getPublicUrl(file.name);
+        console.log(publicUrl);
     }
 
     return (
