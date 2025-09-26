@@ -69,7 +69,7 @@ export default function AdminProductsPage() {
               </tr>
             }
 
-            {products.length === 0 ?
+            {productsLoaded && products.length === 0 ?
               <tr>
                 <td colSpan={7} className="py-4">
                   <div className="flex justify-center items-center w-full">
