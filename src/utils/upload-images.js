@@ -16,7 +16,7 @@ export default function uploadImage(file) {
         const timeStamp = new Date().getTime();
 
         // add new file name (timeStamp + extention)
-        fileName = timeStamp + "." + fileExtension;
+        fileName = timeStamp + file.name + "." + fileExtension;
 
         const supabase = createClient(url, key);
 

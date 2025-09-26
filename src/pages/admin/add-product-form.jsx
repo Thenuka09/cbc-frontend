@@ -4,13 +4,14 @@ import { FaWpforms } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import uploadImage from "../../utils/upload-images";
 
 export default function AddProductForm() {
 
     const [productId, setProductId] = useState("");
     const [productName, setProductName] = useState("");
     const [alternativeNames, setAlternativeNames] = useState("");
-    const [imageURLs, setImageURLs] = useState("");
+    const [imageFiles, setImageFiles] = useState([]);
     const [price, setPrice] = useState();
     const [lastPrice, setLastPrice] = useState();
     const [stocks, setStocks] = useState();
@@ -21,11 +22,15 @@ export default function AddProductForm() {
 
     async function handleSubmit() {
         const altNames = alternativeNames.split(",");
-        const imgUrls = imageURLs.split(",")
 
-        // console.log("Alternative Names", altNames);
-        // console.log("Image URL's", imgUrls);
-
+        const promissesArray = [];
+        
+        for(let i = 0; i<imageFiles.length; i++){
+            promissesArray[i] = uploadImage(imageFiles[i]);
+        }
+        
+        const imgUrls = await Promise.all(promissesArray);
+        
         const product = {
             productId : productId,
             productName : productName,
@@ -91,13 +96,13 @@ export default function AddProductForm() {
                         />
                     </div>
                     <div className="flex flex-col space-y-2">
-                        <label className="font-[400]">Images URL's</label>
+                        <label className="font-[400]">Select Images</label>
                         <input
-                            type="text"
+                            type="file"
                             placeholder="enter image urls"
-                            value={imageURLs}
-                            onChange={(e) => { setImageURLs(e.target.value) }}
-                            className="h-[40px] px-2 py-1 border border-gray-300 rounded-[6px] focus:outline-none focus:border-blue-600 text-[14px] font-[400]"
+                            onChange={(e) => { setImageFiles(e.target.files) }}
+                            className="cursor-pointer h-[40px] px-2 py-1 border border-gray-300 rounded-[6px] focus:outline-none focus:border-blue-600 text-[14px] font-[400]"
+                            multiple
                         />
                     </div>
                     <div className="flex flex-col space-y-2">
