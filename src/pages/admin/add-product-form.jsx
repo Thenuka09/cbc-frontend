@@ -30,7 +30,7 @@ export default function AddProductForm() {
         }
         
         const imgUrls = await Promise.all(promissesArray);
-        
+
         const product = {
             productId : productId,
             productName : productName,
@@ -46,7 +46,7 @@ export default function AddProductForm() {
         const token = localStorage.getItem("token");
 
         try {
-            await axios.post("http://localhost:5000/api/product", product, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product`, product, {
                 headers : {
                     Authorization : `Bearer ${token}`
                 }

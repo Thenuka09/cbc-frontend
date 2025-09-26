@@ -16,7 +16,7 @@ export default function AdminProductsPage() {
       // get product details
       async function getProducts() {
         try {
-          const response = await axios.get("http://localhost:5000/api/product");
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product`);
           setProducts(response.data);
           setProductsLoaded(true);
         } catch (error) {
@@ -106,7 +106,7 @@ export default function AdminProductsPage() {
                         onClick={async () => {
                           try {
                             const token = localStorage.getItem("token");
-                            await axios.delete(`http://localhost:5000/api/product/${product.productId}`, {
+                            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/product/${product.productId}`, {
                               headers: {
                                 Authorization: `Bearer ${token}`
                               }

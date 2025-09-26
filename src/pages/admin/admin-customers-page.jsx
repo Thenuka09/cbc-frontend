@@ -34,7 +34,7 @@ export default function AdminCustomersPage() {
     useEffect(() => {
         async function getAllCustomers() {
             try {
-                const response = await axios.get("http://localhost:5000/api/user/customers");
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/customers`);
                 setCustomers(response.data);
             } catch (error) {
                 console.error("Failed to get customers, ", error);
