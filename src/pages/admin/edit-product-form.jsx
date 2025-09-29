@@ -3,22 +3,33 @@ import { MdAddTask } from "react-icons/md";
 import { FaWpforms } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import uploadImage from "../../utils/upload-images";
 
 export default function EditProductForm() {
 
-    const [productId, setProductId] = useState("");
-    const [productName, setProductName] = useState("");
-    const [alternativeNames, setAlternativeNames] = useState("");
-    const [imageFiles, setImageFiles] = useState([]);
-    const [price, setPrice] = useState();
-    const [lastPrice, setLastPrice] = useState();
-    const [stocks, setStocks] = useState();
-    const [description, setDescription] = useState("");
-
+    //useLocation hook
+    const location = useLocation();
+    const product = location.state.product
+    // console.log(product)
+    const altNames = product.altNames.join(",");
+    
     // Navigation
     const navigate = useNavigate();
+
+    // product validate
+    if(product == null){
+        navigate("/admin/products/");
+    }
+
+    const [productId, setProductId] = useState(product.productId);
+    const [productName, setProductName] = useState(product.productName);
+    const [alternativeNames, setAlternativeNames] = useState(altNames);
+    const [imageFiles, setImageFiles] = useState([]);
+    const [price, setPrice] = useState(product.price);
+    const [lastPrice, setLastPrice] = useState(product.lastPrice);
+    const [stocks, setStocks] = useState(product.stock);
+    const [description, setDescription] = useState(product.description);
 
     async function handleSubmit() {
         const altNames = alternativeNames.split(",");
@@ -69,6 +80,7 @@ export default function EditProductForm() {
                         <label className="font-[400]">Product ID</label>
                         <input
                             type="text"
+                            disabled
                             placeholder="enter product id"
                             value={productId}
                             onChange={(e) => { setProductId(e.target.value) }}
