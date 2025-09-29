@@ -8,6 +8,7 @@ import AdminProductsPage from "./admin/admin-products-page";
 import AdminOrdersPage from "./admin/admin-orders-page";
 import AdminCustomersPage from "./admin/admin-customers-page";
 import AddProductForm from "./admin/add-product-form";
+import EditProductForm from "./admin/edit-product-form";
 
 export default function AdminHomePage() {
   return (
@@ -46,6 +47,7 @@ export default function AdminHomePage() {
                 <Route path="/dashboard" element={<AdminDashboardPage/>}/>
                 <Route path="/products" element={<AdminProductsPage/>}/>
                 <Route path="/products/add-products" element={<AddProductForm/>}/>
+                <Route path="/products/edit-products" element={<EditProductForm/>}/>
                 <Route path="/orders" element={<AdminOrdersPage/>}/>
                 <Route path="/customers" element={<AdminCustomersPage/>}/>
             </Routes>

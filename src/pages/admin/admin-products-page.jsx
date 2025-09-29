@@ -3,13 +3,16 @@ import axios from "axios";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BsCartPlus } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export default function AdminProductsPage() {
   // product list state
   const [products, setProducts] = useState([])
   const [productsLoaded, setProductsLoaded] = useState(false);
+
+  //useNavigate 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!productsLoaded) {
@@ -122,7 +125,13 @@ export default function AdminProductsPage() {
                         className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-red-700 hover:bg-red-300 hover:text-black">
                         <MdDeleteForever />
                       </button>
-                      <button className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
+
+                      {/* product edit button */}
+                      <button 
+                        onClick={()=>{
+                          navigate("/admin/products/edit-products")
+                        }}
+                        className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
                     </div>
                   </td>
                 </tr>
