@@ -129,7 +129,9 @@ export default function AdminProductsPage() {
                       {/* product edit button */}
                       <button 
                         onClick={()=>{
-                          navigate("/admin/products/edit-products")
+                          navigate("/admin/products/edit-products" , {
+                            state : {product: product}
+                          })
                         }}
                         className="cursor-pointer p-2 bg-gray-200 rounded-2xl text-blue-700  hover:bg-blue-300 hover:text-black"><FaEdit /></button>
                     </div>
