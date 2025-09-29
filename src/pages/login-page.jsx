@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(AiOutlineEyeInvisible);
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleToggle = () => {
     if (type === "password") {
@@ -26,7 +27,7 @@ export default function LoginPage() {
 
   async function login(e) {
     e.preventDefault(); // stop form reload
-
+    setIsLogin(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
@@ -39,12 +40,12 @@ export default function LoginPage() {
       // check user is null
       if (response.data.userData == null) {
         toast.error(response.data.message);
+        setIsLogin(false);
         return;
       }
 
       // success toast message
       toast.success(response.data.message);
-
       console.log(response);
       // save the token to local storage
       localStorage.setItem("token", response.data.token);
@@ -52,11 +53,14 @@ export default function LoginPage() {
       // redirect
       if (response.data.userData.type == "admin") {
         window.location.href = "/admin";
+        setIsLogin(false);
       } else {
         window.location.href = "/";
+        setIsLogin(false);
       }
     } catch (e) {
       console.error("Login Failed", e);
+      setIsLogin(false);
     }
   }
 
@@ -120,12 +124,18 @@ export default function LoginPage() {
           </div>
 
           <button
-            className="flex items-center justify-center border p-1.5 text-white rounded-lg bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700 text-[20px] font-[600] cursor-pointer"
+            className={`flex items-center justify-center border p-1.5 text-white rounded-lg bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700 cursor-pointer`}
             onClick={login}
             // type="submit"
           >
-            <SlLogin size={16} className="mr-2" />
-            Login
+            {isLogin ? (
+              "Logging in..."
+            ) : (
+              <>
+                <SlLogin size={16} className="mr-2" />
+                Login
+              </>
+            )}
           </button>
         </form>
       </div>
