@@ -8,6 +8,7 @@ import ProductPage from "./pages/customers/products-page";
 import ContactUsPage from "./pages/customers/contact-us-page";
 import AboutUsPage from "./pages/customers/about-us-page";
 import { Toaster } from "react-hot-toast";
+import ProductOverview from "./pages/customers/product-overview";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/products" element={<ProductPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/productInfo/:id" element={<ProductOverview/>}/>
             <Route path="/admin/*" element={<AdminHomePage />} />
           </Routes>
         </BrowserRouter>
