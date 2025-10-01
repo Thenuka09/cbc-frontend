@@ -3,6 +3,7 @@ import NavBar from "../../components/nav-bar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import NotFound from "./not-found";
+import ImageSlider from "../../components/image-slider";
 
 export default function ProductOverview() {
   const params = useParams();
@@ -50,7 +51,8 @@ export default function ProductOverview() {
       {status == "Found" && (
         <div className="flex m-2">
           <div className="w-[35%] h-full">
-            <img src={product.images[0]} alt="product images" className="rounded-lg h-72 w-full object-cover"/>
+            <ImageSlider images={product.images}/>
+            {/* <img src={product.images[0]} alt="product images" className="rounded-lg h-72 w-full object-cover"/> */}
           </div>
           <div className="w-[65%] h-full flex flex-col ml-2">
             <span>Product Name : {product.productName}</span>
